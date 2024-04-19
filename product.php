@@ -115,6 +115,17 @@
             color: white; /* Change icon color when clicked */
         }
 
+        .swap-available {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.7); /* Adjust the opacity and color as needed */
+            padding: 5px 9px;
+            border-radius: 5px;
+            font-size: 14px;
+            color: black;
+        }
+
     </style>
 </head>
 <body>
@@ -223,6 +234,7 @@
                         <div class="col-lg-4 col-md-4">
                             <div class="card">
                                 <div class="position-relative">
+                                    <div class="swap-available"><?php echo $itemCount;?> Swaps Available</div>
                                     <img src="<?php echo $row["imageURL"]; ?>" class="card-img-top" alt="Card Image">
                                     <!-- Love icon for wishlist -->
                                     <?php $item_ID = $row["itemID"];?>
