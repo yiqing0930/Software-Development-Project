@@ -107,10 +107,36 @@
             // Handle case where no itemID is provided in the URL
             echo "Item ID not provided.";
         }
-
-        // Close database connection
-        $conn->close();
     ?>
+
+        <?php 
+            if(isset($_SESSION['email'])){
+                $maxPriceDifference = 5;
+
+                 // Fetch items from the database
+                 $sql_count = "SELECT COUNT(*) AS item_count
+                    FROM Item 
+                    INNER JOIN Category ON Item.categoryID = Category.categoryID 
+                    WHERE Item.publisherEmail = '{$_SESSION['email']}' 
+                    AND ABS(Item.price - $item_price) <= $maxPriceDifference";
+
+                $result_count = $conn->query($sql_count);
+
+                // Check if the query executed successfully
+                if ($result_count) {
+                    // Fetch the result row
+                    $row = $result_count->fetch_assoc();
+
+                    // Access the count value
+                    $itemCount = $row['item_count'];
+
+                } else {
+                    // Handle query execution failure
+                    echo "Error executing the query: " . $conn->error;
+                }
+            }
+
+            ?> 
 
 
     <div class="container mt-5">
@@ -131,6 +157,11 @@
                     <br/>
                     <p class="card-text"><small class="text-body-secondary"><?php echo $item_category; ?></small></p>
                     <p class="card-text"><?php echo $item_desc; ?></p>
+                    <?php 
+                        if(isset($_SESSION['email'])){
+                            echo '<p class="card-text" style="color: green; font-size: 17px;"><small><i><strong>' . $itemCount.' Possible Item For Swap.</strong></i></small></p>';
+                        }
+                    ?>
                     <p class="card-text"><small class="text-body-secondary"><?php echo '£ '.number_format($item_price, 2); ?></small></p>
                     <br/>
                     <a><button id="swapButton" type="button">Swap Now</button></a>

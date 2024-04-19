@@ -116,6 +116,17 @@
                     color: white; /* Change icon color when clicked */
                 }
 
+                .swap-available {
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                    background-color: rgba(255, 255, 255, 0.7); /* Adjust the opacity and color as needed */
+                    padding: 5px 9px;
+                    border-radius: 5px;
+                    font-size: 14px;
+                    color: black;
+                }
+
             </style>
 </head>
 <body>
@@ -210,10 +221,40 @@
                     if ($result->num_rows > 0) {
                         // Output each filtered item
                         while ($row = $result->fetch_assoc()) {
+                            if(isset($_SESSION['email'])){
+                                $item_price = $row["price"]; 
+                            $maxPriceDifference = 5;
+                            
+                            
+                            // Fetch items from the database
+                            $sql_count = "SELECT COUNT(*) AS item_count
+                                          FROM Item 
+                                          INNER JOIN Category ON Item.categoryID = Category.categoryID 
+                                          WHERE Item.publisherEmail = '{$_SESSION['email']}' 
+                                          AND ABS(Item.price - $item_price) <= $maxPriceDifference";
+
+                            $result_count = $conn->query($sql_count);
+
+                            // Check if the query executed successfully
+                            if ($result_count) {
+                                // Fetch the result row
+                                $row_count = $result_count->fetch_assoc();
+
+                                // Access the count value
+                                $itemCount = $row_count['item_count'];
+
+                            } else {
+                                // Handle query execution failure
+                                echo "Error executing the query: " . $conn->error;
+                            }
+                            }
                             ?>
                             <div class="col-lg-4 col-md-4">
                                 <div class="card">
                                     <div class="position-relative">
+                                        <?php if(isset($_SESSION['email'])){ 
+                                            echo '<div class="swap-available">' .$itemCount .' Swaps Available</div>';
+                                        } ?>
                                         <img src="<?php echo $row["imageURL"]; ?>" class="card-img-top" alt="Card Image">
                                         <!-- Love icon for wishlist -->
                                         <button class="btn btn-love" onclick="toggleWishlist(this)">
