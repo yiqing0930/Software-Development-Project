@@ -257,21 +257,21 @@
     }
 
     function updateDatabase(fieldId, newValue) {
-        // You'll need to implement AJAX here to send the updated value to the server and update the database
-        // Example:
-        /*
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'update.php', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-                // Handle response from the server
-                console.log(xhr.responseText);
+        // AJAX request
+        $.ajax({
+            type: "POST",
+            url: "update_profile.php", 
+            data: {
+                fieldId: fieldId,
+                newValue: newValue
+            },
+            success: function(response) {
+                console.log("Update successful");
+            },
+            error: function(xhr, status, error) {
+                console.error("Error updating database:", error);
             }
-        };
-        xhr.send('field=' + encodeURIComponent(fieldId) + '&value=' + encodeURIComponent(newValue));
-        */
-        // Replace 'update.php' with the URL of your server-side script that handles database updates
+        });
     }
 </script>
 
