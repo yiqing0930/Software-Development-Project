@@ -90,6 +90,18 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             background-color: #f7f7f7;
         }
+
+        .edit-icon {
+            display: inline-block;
+            width: 23px;
+            height: 23px;
+            line-height: 23px;
+            text-align: center;
+            border-radius: 50%; 
+            background-color: #ccc; 
+            cursor: pointer;
+            margin-left: 5px;
+        }
     </style>
 </head>
 <body>
@@ -109,7 +121,7 @@
         $userEmail = $_SESSION['email']; 
 
         // SQL query to fetch user information
-        $sqlUser = "SELECT firstName, lastName, dateBirth FROM Student WHERE email = '$userEmail'";
+        $sqlUser = "SELECT firstName, lastName, dateBirth, profilePic FROM Student WHERE email = '$userEmail'";
 
         // Execute the query
         $result = $conn->query($sqlUser);
@@ -124,6 +136,7 @@
             $lastName = $row['lastName'];
             $dob = $row['dateBirth'];
             $formattedDate = date('jS F Y', strtotime($dob));
+            $profileImg = $row['profilePic'];
         }else{
             echo 'User Not Found.';
         }
@@ -131,24 +144,37 @@
 
     <br/>
     <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="profile-picture-container">
-                    <img src="https://img.freepik.com/premium-photo/portrait-young-modern-businesswoman-classic-suit_253512-24.jpg" alt="Profile Picture" class="profile-picture">
-                </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="profile-picture-container">
+                <img src="<?php echo $profileImg; ?>" alt="Profile Picture" class="profile-picture">
             </div>
-            <div class="col-md-8 profile_container">
-                <div class="container mt-5" style="margin-left: 20px;">
-                <h4>Personal Information</h4>
+        </div>
+        <div class="col-md-8 profile_container">
+            <div class="container mt-5" style="margin-left: 20px;">
+                <h3>Personal Information</h3>
                 <br/>
                 <p><strong>Email: </strong><?php echo isset($_SESSION['email']) ? $_SESSION['email'] : 'N/A'; ?></p>
-                <p><strong>First Name: </strong><?php echo isset($firstName) ? $firstName : 'N/A'; ?></p>
-                <p><strong>Last Name: </strong><?php echo isset($lastName) ? $lastName : 'N/A'; ?></p>
+                
+                <!-- Editable First Name -->
+                <p>
+                    <strong>First Name: </strong>
+                    <span id="first-name"><?php echo isset($firstName) ? $firstName : 'N/A'; ?></span>
+                    <span class="edit-icon" onclick="editField('first-name')">&#9998;</span>
+                </p>
+                
+                <!-- Editable Last Name -->
+                <p>
+                    <strong>Last Name: </strong>
+                    <span id="last-name"><?php echo isset($lastName) ? $lastName : 'N/A'; ?></span>
+                    <span class="edit-icon" onclick="editField('last-name')">&#9998;</span>
+                </p>
+                
                 <p><strong>Birth Date: </strong><?php echo isset($formattedDate) ? $formattedDate : 'N/A'; ?></p>
-                </div>
             </div>
         </div>
     </div>
+</div>
 
     <!-- Wider container on the right (col-sm-10) -->
     <div class="container mt-5">
@@ -192,6 +218,62 @@
             ?>
         </div>
         <br/><br/>
+
+        <script>
+    function editField(fieldId) {
+        // Get the span element containing the text
+        var spanElement = document.getElementById(fieldId);
+
+        // Get the current text content
+        var currentValue = spanElement.textContent.trim();
+
+        // Create an input element
+        var inputElement = document.createElement('input');
+        inputElement.type = 'text';
+        inputElement.value = currentValue;
+
+        // Replace the span with the input element
+        spanElement.parentNode.replaceChild(inputElement, spanElement);
+
+        // Focus the input element
+        inputElement.focus();
+
+        // Add event listener to handle editing
+        inputElement.addEventListener('blur', function () {
+            // Get the new value from the input field
+            var newValue = inputElement.value.trim();
+
+            // Create a new span element with the new value
+            var newSpanElement = document.createElement('span');
+            newSpanElement.id = fieldId;
+            newSpanElement.textContent = newValue;
+
+            // Replace the input field with the new span element
+            inputElement.parentNode.replaceChild(newSpanElement, inputElement);
+
+            // Update the value in the database via AJAX
+            updateDatabase(fieldId, newValue);
+        });
+    }
+
+    function updateDatabase(fieldId, newValue) {
+        // You'll need to implement AJAX here to send the updated value to the server and update the database
+        // Example:
+        /*
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'update.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                // Handle response from the server
+                console.log(xhr.responseText);
+            }
+        };
+        xhr.send('field=' + encodeURIComponent(fieldId) + '&value=' + encodeURIComponent(newValue));
+        */
+        // Replace 'update.php' with the URL of your server-side script that handles database updates
+    }
+</script>
 
     <script>
         $(function(){
