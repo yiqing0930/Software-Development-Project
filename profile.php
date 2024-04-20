@@ -69,6 +69,27 @@
             height: 300px;
             object-fit: cover; 
         }
+
+        .profile-picture-container {
+            width: 320px; /* Adjust size as needed */
+            height: 320px; /* Adjust size as needed */
+            border-radius: 50%;
+            overflow: hidden;
+            margin-bottom: 20px; /* Adjust spacing */
+        }
+
+        .profile-picture {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile_container{
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            background-color: #f7f7f7;
+        }
     </style>
 </head>
 <body>
@@ -108,15 +129,23 @@
         }
     ?>
 
+    <br/>
     <div class="container mt-5">
-        <div class="card profile_card">
-            <div class="card-body" style="margin: 20px;">
-                <h4 class="card-title">Personal Information</h4>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="profile-picture-container">
+                    <img src="https://img.freepik.com/premium-photo/portrait-young-modern-businesswoman-classic-suit_253512-24.jpg" alt="Profile Picture" class="profile-picture">
+                </div>
+            </div>
+            <div class="col-md-8 profile_container">
+                <div class="container mt-5" style="margin-left: 20px;">
+                <h4>Personal Information</h4>
                 <br/>
-                <p class="card-text"><?php echo '<strong>Email: </strong>'.$_SESSION['email']; ?></p>
-                <p class="card-text"><?php echo '<strong>First Name: </strong>'.$firstName;; ?></p>
-                <p class="card-text"><?php echo '<strong>Last Name: </strong>'.$lastName; ?></p>
-                <p class="card-text"><?php echo '<strong>Birth Date: </strong>'.$formattedDate; ?></p>
+                <p><strong>Email: </strong><?php echo isset($_SESSION['email']) ? $_SESSION['email'] : 'N/A'; ?></p>
+                <p><strong>First Name: </strong><?php echo isset($firstName) ? $firstName : 'N/A'; ?></p>
+                <p><strong>Last Name: </strong><?php echo isset($lastName) ? $lastName : 'N/A'; ?></p>
+                <p><strong>Birth Date: </strong><?php echo isset($formattedDate) ? $formattedDate : 'N/A'; ?></p>
+                </div>
             </div>
         </div>
     </div>
