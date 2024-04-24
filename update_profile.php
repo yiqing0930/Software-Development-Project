@@ -8,6 +8,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get fieldId and newValue from the POST data
     $fieldId = $_POST["fieldId"];
     $newValue = $_POST["newValue"];
+    // Extract the item ID from the fieldId
+    $itemId = substr($fieldId, strlen("item-title-"));
 
     // Get user email from session
     $userEmail = $_SESSION['email'];
@@ -21,7 +23,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $sql = "UPDATE Student SET lastName = '$newValue' WHERE email = '$userEmail'";
             break;
         default:
-            // Handle other fields if needed
+            // Check if the fieldId starts with "item-title-" (indicating a product title update)
+            if (strpos($fieldId, "item-title-") === 0) {
+                // If so, update the product title using the extracted item ID
+                $sql = "UPDATE Item SET title = '$newValue' WHERE itemID = '$itemId'";
+            } else {
+                // Handle other fields if needed
+            }
             break;
     }
 

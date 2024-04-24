@@ -102,6 +102,19 @@
             cursor: pointer;
             margin-left: 5px;
         }
+
+        .item-edit-icon {
+            display: inline-block;
+            width: 22px;
+            height: 22px;
+            line-height: 22px;
+            text-align: center;
+            border-radius: 50%; 
+            background-color: #ccc; 
+            cursor: pointer;
+            margin-left: 5px;
+        }
+
     </style>
 </head>
 <body>
@@ -201,7 +214,12 @@
                                     <img src="<?php echo $row["imageURL"]; ?>" class="card-img-top" alt="Card Image">
                             </div>
                                 <div class="card-body">
-                                    <h5 class="card-title"><?php echo $row["title"]; ?></h5>
+                                    <h5 class="card-title">
+                                        <span class="item-title" id="item-title-<?php echo $row['itemID']; ?>">
+                                            <?php echo isset($row["title"]) ? $row["title"] : 'N/A';; ?>
+                                        </span>  
+                                        <span class="item-edit-icon" onclick="editField('item-title-<?php echo $row['itemID']; ?>')">&#9998;</span>
+                                    </h5>
                                     <p class="card-text" style="margin-top: -15px;"><small class="text-body-secondary"><?php echo $row["categoryType"]; ?></small></p>
                                     <p><?php echo '£ '.number_format($row["price"], 2); ?></p>
                                 </div>
