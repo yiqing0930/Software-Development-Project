@@ -75,10 +75,10 @@
 
             // Prepare SQL query to select item based on itemID
             $sql = 
-            "SELECT Item.*, Category.categoryType, Student.firstName 
+            "SELECT Item.*, Category.categoryType, User.firstName 
             FROM Item 
             INNER JOIN Category ON Item.categoryID = Category.categoryID 
-            INNER JOIN Student ON Item.publisherEmail = Student.email 
+            INNER JOIN User ON Item.publisherEmail = User.email 
             WHERE Item.itemID = '$itemID'";
 
             // Execute SQL query
@@ -110,6 +110,7 @@
     ?>
 
         <?php 
+        $itemCount = 0;
             if(isset($_SESSION['email'])){
                 $maxPriceDifference = 5;
 
@@ -122,6 +123,8 @@
 
                 $result_count = $conn->query($sql_count);
 
+                
+
                 // Check if the query executed successfully
                 if ($result_count) {
                     // Fetch the result row
@@ -129,6 +132,7 @@
 
                     // Access the count value
                     $itemCount = $row['item_count'];
+                    
 
                 } else {
                     // Handle query execution failure
@@ -159,7 +163,7 @@
                     <p class="card-text"><?php echo $item_desc; ?></p>
                     <?php 
                         if(isset($_SESSION['email'])){
-                            echo '<p class="card-text" style="color: green; font-size: 17px;"><small><i><strong>' . $itemCount.' Possible Item For Swap.</strong></i></small></p>';
+                            echo '<p class="card-text" style="color: green; font-size: 17px;"><small><i><strong>You have ' . $itemCount.' Possible Item to Swap With This Item.</strong></i></small></p>';
                         }
                     ?>
                     <p class="card-text"><small class="text-body-secondary"><?php echo '£ '.number_format($item_price, 2); ?></small></p>
@@ -189,6 +193,23 @@
         </div>
     </div>
 
+    <!-- Modal for Not Eligible -->
+    <div class="modal fade" id="notEligibleModal" tabindex="-1" aria-labelledby="notEligibleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="notEligibleModalLabel">Not Eligible</h5>
+                </div>
+                <div class="modal-body">
+                    Sorry, No swaps available for this item, Please try another! 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     
 
     <script>
@@ -202,24 +223,39 @@
     // Check if the session email is set
     $isSessionSet = isset($_SESSION['email']) ? 'true' : 'false';
 
-?>
+    ?>
 
     <script>
-        // Define a JavaScript variable to store the session status
-        var isSessionSet = <?php echo $isSessionSet; ?>;
-        
-        // JavaScript to handle button click
+
+        $(function() {
+            // Define a JavaScript variable to store the session status
+            var isSessionSet = <?php echo $isSessionSet; ?>;
+            
+            console.log(isSessionSet);
+            // JavaScript to handle button click
             $('#swapButton').click(function() {
                 if (isSessionSet) {
                     // Get the itemID
                     var itemID = '<?php echo $item_ID; ?>'; // Add quotes around PHP variable
-                    // Redirect to swapme.php with itemID as parameter
-                    window.location.href = 'swap.php?id=' + itemID;
+                    // Check if itemCount is 0
+                    var itemCount = <?php echo $itemCount; ?>;
+                    if (itemCount === 0) {
+                        // Display not eligible modal
+                        $('#notEligibleModal').modal('show');
+                        // Redirect to product.php after the modal is closed
+                        $('#notEligibleModal').on('hidden.bs.modal', function () {
+                            window.location.href = 'product.php';
+                        });
+                    } else {
+                        // Redirect to swapme.php with itemID as parameter
+                        window.location.href = 'swap.php?id=' + itemID;
+                    }
                 } else {
                     // Display error modal if session email is not set
                     displayErrorModal();
                 }
             });
+        });
     </script>
 
     <script>

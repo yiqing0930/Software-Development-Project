@@ -89,7 +89,7 @@
         <div class="container-fluid">
           <div class="carousel-caption d-md-block">
             <h3 style="font-size: 3vw">UWE SwapMe</h3>
-            <p>A dedicated platform designed specifically for UWE students. We are committed to promoting sustainable practices and fostering a sense of community among UWE students.</p>
+            <p>A dedicated platform designed specifically for UWE staff and students. We are committed to promoting sustainable practices and fostering a sense of community among UWE staff and students.</p>
           </div>
         </div>
       </div>
@@ -98,7 +98,7 @@
         <div class="container-fluid">
           <div class="carousel-caption d-md-block">
             <h3 style="font-size: 3vw">What We Do</h3>
-            <p>We provide a convenient and user-friendly platform for UWE students to exchange items they no longer need for ones they desire.</p>
+            <p>We provide a convenient and user-friendly platform for UWE staff and students to exchange items they no longer need for ones they desire.</p>
             </p>
           </div>
         </div>
@@ -108,7 +108,7 @@
         <div class="container-fluid">
           <div class="carousel-caption d-md-block">
             <h3 style="font-size: 3vw">Our Misson</h3>
-            <p>Our goal is to reduce waste, promote eco-conscious behavior, and create opportunities for meaningful interactions among students.</p>
+            <p>Our goal is to reduce waste, promote eco-conscious behavior, and create opportunities for meaningful interactions among UWE community.</p>
           </div>
         </div>
       </div>

@@ -265,7 +265,7 @@
                                     <div class="card-body">
                                         <h5 class="card-title"><?php echo $row["title"]; ?></h5>
                                         <p class="card-text" style="margin-top: -15px;"><small class="text-body-secondary"><?php echo $row["categoryType"]; ?></small></p>
-                                        <p><?php echo '£ '.number_format($row["price"], 2); ?></p>
+                                        <p style="font-size: 15px;"><i>Estimated <b><?php echo ' £ '.number_format($row["price"], 0); ?></b></i></p>
                                         <a href="product_details.php?id=<?php echo $row["itemID"]; ?>" target="_self" class="btn btn-outline-light btn-view">View >></a>
                                     </div>
                                 </div>

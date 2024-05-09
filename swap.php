@@ -91,6 +91,7 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            background-color: #f7f7f7;
         }
 
         label {
@@ -109,7 +110,7 @@
         }
 
         button[type="submit"] {
-            background-color: #dbd1d0;
+            background-color: #7c838a;
             color: white;
             padding: 8px 10px;
             margin: 8px 0;
@@ -117,10 +118,12 @@
             border-radius: 10px;
             cursor: pointer;
             width: 10%;
+            margin-top: 20px;
+            margin-left: 920px;
         }
 
         button[type="submit"]:hover {
-            background-color: #7c838a;
+            background-color: #abafb3;
         }
 
         .product_card {
@@ -159,7 +162,6 @@
         padding: 8px 25px;
         background-color: #ccc1c0;
         color: white;
-        border: 10px white;
         border-radius: 3px;
         cursor: pointer;
     }
@@ -196,10 +198,10 @@
 
             // Prepare SQL query to select item based on itemID
             $sql = 
-            "SELECT Item.*, Category.categoryType, Student.firstName 
+            "SELECT Item.*, Category.categoryType, User.firstName 
             FROM Item 
             INNER JOIN Category ON Item.categoryID = Category.categoryID 
-            INNER JOIN Student ON Item.publisherEmail = Student.email 
+            INNER JOIN User ON Item.publisherEmail = User.email 
             WHERE Item.itemID = '$itemID'";
 
             // Execute SQL query
@@ -261,13 +263,14 @@
         </div>
     </div>
 
-    <form id="dateTimeForm">
+    <div class="container mt-5" style="margin-bottom: 50px;">
+        <form id="dateTimeForm" action="swap_process.php" method="GET">
         <div class="container mt-2">
             <label for="date">Select a Date:</label><br>
-            <input type="date" id="date" name="date" min="<?php echo date('Y-m-d'); ?>"><br><br>
+            <input type="date" id="date" name="date" min="<?php echo date('Y-m-d'); ?>" value="<?php echo date('Y-m-d'); ?>"><br><br>
             
             <label for="date">Select a Time:</label><br>
-            <input type="time" id="time" name="time"><br><br>
+            <input type="time" id="time" name="time" value="<?php echo date('H:00', strtotime('+1 hour')); ?>"><br><br>
 
             <label for="date">Select a Location:</label><br>
             <div class="radio-button-group">
@@ -288,7 +291,9 @@
 
                         echo '<input type="radio" id="'. $locationID .'" name="locations" value="'. $locationID .'">';
                         echo '<label for="'.$locationID.'">'.$locationType.'</label>';
-                    
+                        echo '<input type="hidden" name="selectedLocationID" id="selectedLocationID" value="'.$locationID.'">';
+                        echo '<input type="hidden" name="selectedLocation" id="selectedLocation" value="'.$locationType.'">';
+    
                 }
             } else {
                 echo 'No categories found.';
@@ -297,10 +302,39 @@
 
         </div>
             <br/>
-            <label for="date">Select An Item Possible for Swap:</label><br>
+            <div>
+            <label for="items" style="margin-bottom: 5px;">Select An Item Possible for Swap:</label><br/>
+            <?php 
+            $maxPriceDifference = 5;
+
+            // Fetch items from the database
+            $sql_count = "SELECT COUNT(*) AS item_count
+                    FROM Item 
+                    INNER JOIN Category ON Item.categoryID = Category.categoryID 
+                    WHERE Item.publisherEmail = '{$_SESSION['email']}' 
+                    AND ABS(Item.price - $item_price) <= $maxPriceDifference";
+
+                $result_count = $conn->query($sql_count);
+
+                // Check if the query executed successfully
+                if ($result_count) {
+                    // Fetch the result row
+                    $row = $result_count->fetch_assoc();
+
+                    // Access the count value
+                    $itemCount = $row['item_count'];
+
+                    // Output the count
+                    echo '<p style="color: green; font-size: 17px;"><small><i>' . $itemCount . ' Possible Item For Swap.</i></small></p>';
+                } else {
+                    // Handle query execution failure
+                    echo "Error executing the query: " . $conn->error;
+                }
+
+            ?> 
+            </div>
             <div class="row" style="margin-top: 3px;">
             <?php
-            $maxPriceDifference = 5;
             
             // Fetch items from the database
             $sql2 = "SELECT Item.*, Category.categoryType 
@@ -342,11 +376,19 @@
             $conn->close();
             ?>
             </div>
-        
-        
-        <button type="submit">Submit</button>
+                
+        <input type="hidden" name="itemID" value="<?php echo $item_ID; ?>">
+        <input type="hidden" name="itemTitle" value="<?php echo $item_title; ?>">
+        <input type="hidden" name="publisherName" value="<?php echo $item_publisherName ; ?>">
+        <input type="hidden" name="itemPublisher" value="<?php echo $item_publisher; ?>">
+        <input type="hidden" name="itemPrice" value="<?php echo $item_price; ?>">
+        <button type="submit">Send Offer</button>
+        <!--
+        <button type="submit"><a href="mailto:<?php //echo $item_publisher;?>">Send Offer</a></button>
+        !-->
     </div>
     </form>
+    </div>
     
     <!-- Modal for error messages -->
     <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
@@ -354,7 +396,6 @@
         <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title" id="errorModalLabel">Error</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
             <p id="errorMessage"></p>
@@ -365,6 +406,7 @@
         </div>
     </div>
     </div>
+    
 
     <script>
         // Function to set minimum date to today
@@ -386,9 +428,9 @@
 
         if (selectedDate < today) {
             // Show error modal
-            $('#errorMessage').text("Please select a valid date for item exchange. Previous date is not allowed!");
+            $('#errorMessage').text("Please select a valid date for item exchange!");
             $('#errorModal').modal('show');
-            document.getElementById("date").value = "";
+            document.getElementById("date").value = "<?php echo date('Y-m-d'); ?>";
             return false; // Date is invalid
         }
         return true; // Date is valid
@@ -411,7 +453,16 @@
         });
     });
         
-        
+    // JavaScript code to update itemIdToExchange when the form is submitted
+    $(document).ready(function() {
+        $('input[name="selectedItem"]').change(function() {
+            // Get the value of the selected radio button
+            var selectedItemId = $(this).val();
+            // Set the value of the hidden input field to the selected item's ID
+            $('#itemIdToExchange').val(selectedItemId);
+        });
+    });
+   
         $(function(){
             $("#navbar-container").load("navigation_bar.php");
         });

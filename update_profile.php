@@ -17,10 +17,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Update database based on the fieldId
     switch ($fieldId) {
         case "first-name":
-            $sql = "UPDATE Student SET firstName = '$newValue' WHERE email = '$userEmail'";
+            $sql = "UPDATE User SET firstName = '$newValue' WHERE email = '$userEmail'";
             break;
         case "last-name":
-            $sql = "UPDATE Student SET lastName = '$newValue' WHERE email = '$userEmail'";
+            $sql = "UPDATE User SET lastName = '$newValue' WHERE email = '$userEmail'";
             break;
         default:
             // Check if the fieldId starts with "item-title-" (indicating a product title update)

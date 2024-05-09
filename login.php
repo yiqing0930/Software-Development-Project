@@ -116,7 +116,7 @@ span.psw {
     </div>
 
     <div class="container1" style="margin: 30px;">
-        <label for="uname"><b>Student Email</b></label>
+        <label for="uname"><b>University Email</b></label>
         <input type="text" placeholder="Enter Email" name="email" required>
         <br/>
         <label for="psw"><b>Password</b></label>

@@ -134,7 +134,7 @@
         $userEmail = $_SESSION['email']; 
 
         // SQL query to fetch user information
-        $sqlUser = "SELECT firstName, lastName, dateBirth, profilePic FROM Student WHERE email = '$userEmail'";
+        $sqlUser = "SELECT firstName, lastName, dateBirth, profilePic FROM User WHERE email = '$userEmail'";
 
         // Execute the query
         $result = $conn->query($sqlUser);

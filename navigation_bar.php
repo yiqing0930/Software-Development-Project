@@ -64,10 +64,11 @@
                     <a class="nav-link" href="product.php">Items</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="sell.php">Swap Now</a>
+                    <a class="nav-link" href="publish.php">Swap Now</a>
                 </li>
                 <?php
                     session_start();
+                    
 
                     if (isset($_SESSION['userName'])) {
                         echo ' <li class="nav-item">';
@@ -130,7 +131,7 @@
 
         // Function to redirect to the sell page
         function redirectToSellPage() {
-            window.location.href = 'sell.php'; // Adjust the URL as needed
+            window.location.href = 'publish.php'; // Adjust the URL as needed
         }
     </script>
 </body>

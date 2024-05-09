@@ -161,7 +161,7 @@
                 <div class="card-body">
                 <h4 class="card-title">Publish to Sell</h4>
                 <p class="card-text"><small class="text-body-secondary">List Your Items Effortlessly​</small></p>
-                <p class="card-text">Easily publish your unwanted items for sale on our platform. Simply upload photos, add descriptions, and set your price – it's that simple. Our user-friendly interface makes listing your items a breeze, allowing you to reach potential students to swap quickly and efficiently.</p>
+                <p class="card-text">Easily publish your unwanted items for sale on our platform. Simply upload photos, add descriptions, and set your price – it's that simple. Our user-friendly interface makes listing your items a breeze, allowing you to reach potential staff and students to swap quickly and efficiently.</p>
                 </div>
             </div>
             </div>
@@ -196,7 +196,7 @@
                 <div class="card-body">
                 <h4 class="card-title">Exclusive Access</h4>
                 <p class="card-text"><small class="text-body-secondary">Trust Your Community​</small></p>
-                <p class="card-text">Rest assured knowing that only UWE students have access to Swap Me. Our authentication process ensures a trusted community for all your exchange needs. By limiting access to UWE students, we create a sense of camaraderie and trust among our users, fostering a vibrant and active exchange community.</p>
+                <p class="card-text">Rest assured knowing that only UWE staff and students have access to Swap Me. Our authentication process ensures a trusted community for all your exchange needs. By limiting access to UWE staff and students, we create a sense of camaraderie and trust among our users, fostering a vibrant and active exchange community.</p>
                 </div>
             </div>
             </div>

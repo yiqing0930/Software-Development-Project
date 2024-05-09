@@ -10,7 +10,7 @@ $password = $_POST['password'];
 
 // SQL query to check if the user exists and the password is correct
 $sql = "SELECT email, password, firstName AS studentFirstName
-        FROM Student
+        FROM User
         WHERE email = ? AND password = ?";
 $stmt = $conn->prepare($sql);
 
