@@ -264,7 +264,7 @@
     </div>
 
     <div class="container mt-5" style="margin-bottom: 50px;">
-        <form id="dateTimeForm" action="swap_process.php" method="GET">
+        <form id="dateTimeForm" action="test.php" method="GET">
         <div class="container mt-2">
             <label for="date">Select a Date:</label><br>
             <input type="date" id="date" name="date" min="<?php echo date('Y-m-d'); ?>" value="<?php echo date('Y-m-d'); ?>"><br><br>

@@ -71,9 +71,9 @@
                     
 
                     if (isset($_SESSION['userName'])) {
-                        echo ' <li class="nav-item">';
-                        echo '<a class="nav-link" href="wishlist.php"><img src="./img/wishlist.png" style="margin-top: -3px; margin-right: 8px; margin-bottom: 10px; width: 29px; height: auto;"></a>';
-                        echo ' </li>';
+                       // echo ' <li class="nav-item">';
+                       // echo '<a class="nav-link" href="wishlist.php"><img src="./img/wishlist.png" style="margin-top: -3px; margin-right: 8px; margin-bottom: 10px; width: 29px; height: auto;"></a>';
+                       // echo ' </li>';
                         echo '<a href="profile.php">';
                         echo '<li class="nav-item">
                                 <img src="https://images.rawpixel.com/image_png_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvdjkzNy1hZXctMTExXzEucG5n.png" style="margin-left: 5px; width: 39px; height: auto;">
@@ -110,7 +110,7 @@
         });
     </script>
 
-<script>
+    <script>
         $(document).ready(function () {
             // Check if user is logged in
             <?php if(isset($_SESSION['userName'])): ?>

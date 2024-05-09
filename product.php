@@ -262,7 +262,14 @@
             </div>
         </div>
         <script>
-            // JavaScript functions here...
+            // Function to toggle wishlist item
+            function toggleWishlist(button) {
+                // Toggle heart icon
+                $(button).find('i').toggleClass('far fas');
+
+                // Toggle color class
+                $(button).toggleClass('clicked');
+            }
         </script>
 
         <!-- Load Navigation Bar -->

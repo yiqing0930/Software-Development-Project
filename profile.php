@@ -21,7 +21,6 @@
     <title>UWE SwapMe</title>
     <style>
         .banner_section {
-            /*background-image: url('https://images.unsplash.com/photo-1523712999610-f77fbcfc3843?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') !important; */
             background-image: url('https://images.unsplash.com/photo-1486241699476-e92ba0f6feec?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') !important;
             opacity: 0.8;
             background-size: cover; 
@@ -115,13 +114,31 @@
             margin-left: 5px;
         }
 
+        /* Style for the delete icon container */
+        .delete-icon-container {
+            width: 30px; 
+            height: 30px; 
+            background-color: white;
+            border-radius: 30%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border:none; 
+            opacity: 0.75;
+        }
+
+        /* Style for the delete icon */
+        .delete-icon {
+            font-size: 16px; /* Adjust size as needed */
+        }
+
     </style>
 </head>
 <body>
-    <!--Include Navigation Bar-->
+    <!-- Include Navigation Bar -->
     <div id="navbar-container"></div>
 
-    <!--Banner Section-->
+    <!-- Banner Section -->
     <div class="container-fluid mt-4 banner_section">
         <h3>My Profile</h3>
         <?php echo "Welcome Back, " .$_SESSION['userName']; ?>
@@ -212,7 +229,13 @@
                             <div class="card product_card">
                                 <div class="position-relative">
                                     <img src="<?php echo $row["imageURL"]; ?>" class="card-img-top" alt="Card Image">
-                            </div>
+                                    <!-- Delete Icon with Circular Background -->
+                                    <span class="position-absolute top-0 end-0 mt-2 me-2">
+                                        <div class="delete-icon-container">
+                                        <i class="fas fa-trash-alt delete-icon" style="color: #E34234;cursor: pointer;" onclick="testing('<?php echo $row['itemID']; ?>')"></i>
+                                        </div>
+                                    </span>
+                                </div>
                                 <div class="card-body">
                                     <h5 class="card-title">
                                         <span class="item-title" id="item-title-<?php echo $row['itemID']; ?>">
@@ -221,7 +244,13 @@
                                         <span class="item-edit-icon" onclick="editField('item-title-<?php echo $row['itemID']; ?>')">&#9998;</span>
                                     </h5>
                                     <p class="card-text" style="margin-top: -15px;"><small class="text-body-secondary"><?php echo $row["categoryType"]; ?></small></p>
-                                    <p><?php echo '£ '.number_format($row["price"], 2); ?></p>
+                                    <p>
+                                        <strong>Value: £</strong>
+                                        <span id="item-price-<?php echo $row['itemID']; ?>">
+                                            <?php echo isset($row["price"]) ? number_format($row["price"], 0) : 'N/A'; ?>
+                                        </span>
+                                        <span class="item-edit-icon" onclick="editField('item-price-<?php echo $row['itemID']; ?>')">&#9998;</span>
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -237,48 +266,97 @@
         </div>
         <br/><br/>
 
-        <script>
-    function editField(fieldId) {
-        // Get the span element containing the text
-        var spanElement = document.getElementById(fieldId);
+        <!-- Modal for displaying error message -->
+        <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="errorModalLabel">Error</h5>
+                    </div>
+                    <div class="modal-body">
+                        Please ensure that the input on;y contains a valid numeric value and is not empty!
+                    </div>
+                    <div class="modal-footer">
+                        <a href="profile.php"><button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        // Get the current text content
-        var currentValue = spanElement.textContent.trim();
+    <!-- Modal for delete confirmation -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Delete Confirmation</h5>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this item?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        // Create an input element
-        var inputElement = document.createElement('input');
-        inputElement.type = 'text';
-        inputElement.value = currentValue;
+    <script>
+        var deleteItemId;
+        // Function to handle delete confirmation
+    function testing(itemId) {
+        $('#deleteModal').modal('show');
+        //$('#deleteModal').modal('show');
+        deleteItemId = itemId;
+        
+    }
 
-        // Replace the span with the input element
+        function editField(fieldId) {
+            var spanElement = document.getElementById(fieldId);
+            var currentValue = spanElement.textContent.trim();
+
+            var inputElement = document.createElement('input');
+            inputElement.type = 'text';
+            inputElement.value = currentValue;
+
+            // Add an event listener for input validation
+            inputElement.addEventListener('input', function(event) {
+                // Allow only numeric input for the price field
+                if (fieldId.startsWith('item-price-')) {
+                    this.value = this.value.replace(/[^0-9.]/g, ''); // Allow decimal point as well
+                }
+             });
+
         spanElement.parentNode.replaceChild(inputElement, spanElement);
 
-        // Focus the input element
         inputElement.focus();
 
-        // Add event listener to handle editing
         inputElement.addEventListener('blur', function () {
-            // Get the new value from the input field
             var newValue = inputElement.value.trim();
 
-            // Create a new span element with the new value
             var newSpanElement = document.createElement('span');
             newSpanElement.id = fieldId;
             newSpanElement.textContent = newValue;
 
-            // Replace the input field with the new span element
             inputElement.parentNode.replaceChild(newSpanElement, inputElement);
 
-            // Update the value in the database via AJAX
-            updateDatabase(fieldId, newValue);
+            if (fieldId.startsWith('item-price-') && !isValidNumeric(newValue)) {
+                $('#errorModal').modal('show'); // Show modal if input is not valid
+            } else {
+                updateDatabase(fieldId, newValue);
+            }
         });
     }
 
+    function isValidNumeric(value) {
+        // Check if the value is a valid numeric value
+        return !isNaN(parseFloat(value)) && isFinite(value);
+    }
+
     function updateDatabase(fieldId, newValue) {
-        // AJAX request
         $.ajax({
             type: "POST",
-            url: "update_profile.php", 
+            url: "update_process.php", 
             data: {
                 fieldId: fieldId,
                 newValue: newValue
@@ -291,12 +369,71 @@
             }
         });
     }
+
+    // Handle delete confirmation
+    $('#confirmDeleteBtn').on('click', function() {
+            // Perform delete action
+            console.log(deleteItemId);
+            deleteItem(deleteItemId);
+            $('#deleteModal').modal('hide');
+        });
+
+    
+
+        // Function to delete item
+        function deleteItem(itemId) {
+            $.ajax({
+                url: 'delete_item.php',
+                method: 'POST',
+                data: { itemId: itemId },
+                success: function(response) {
+                    console.log("Item deleted successfully.");
+                    // Reload the page or update the UI as needed
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error deleting item:", error);
+                    alert("Error deleting item. Please try again later.");
+                }
+            });
+        }
+        
+
 </script>
 
     <script>
         $(function(){
             $("#navbar-container").load("navigation_bar.php");
         });
+
+        // Function to handle delete confirmation
+        function confirmDelete(itemId) {
+            $('#deleteConfirmationModal').modal('show');
+
+            // Set up event listener for delete confirmation
+            $('#confirmDeleteBtn').off('click').on('click', function() {
+                // If user confirms delete, handle deletion
+                deleteProduct(itemId);
+                $('#deleteConfirmationModal').modal('hide');
+            });
+        }
+
+        // Function to handle product deletion
+        function deleteProduct(itemId) {
+            $.ajax({
+                type: "POST",
+                url: "delete_item.php",
+                data: { itemId: itemId },
+                success: function(response) {
+                    console.log("Product deleted successfully");
+                    // Reload the page or update the UI as needed
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error deleting product:", error);
+                }
+            });
+        }
     </script>
 </body>
 </html>
