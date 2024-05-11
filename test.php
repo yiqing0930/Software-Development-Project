@@ -17,7 +17,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $publisher_name = $_GET['publisherName'];  
     $publisher_email = $_GET['itemPublisher']; 
 
-
     //connect database
     include 'database.php';
 
