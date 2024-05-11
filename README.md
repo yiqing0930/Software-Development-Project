@@ -1,3 +1,2 @@
-SwapMe Application
-
-Take note to Open and run the swapme.sql in MySQL Database first
+**Database Setup**
+Open and run swapme.sql in MySQL Database to create the necessary tables and populate initial data.
