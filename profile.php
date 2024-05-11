@@ -283,7 +283,7 @@
         </div>
     </div>
 
-    <!-- Modal for delete confirmation -->
+    <!-- Modal for delete confirmation message-->
     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -294,7 +294,7 @@
                     Are you sure you want to delete this item?
                 </div>
                 <div class="modal-footer">
-                    <a href="profile.php"><button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button></a>
+                    <a href="index.php"><button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button></a>
                     <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
                 </div>
             </div>
