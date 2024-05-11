@@ -1,3 +1,3 @@
 SwapMe Application
 
-1. Open and run the swapme.sql in MySQL Database
+Take note to Open and run the swapme.sql in MySQL Database first
