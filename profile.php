@@ -294,7 +294,7 @@
                     Are you sure you want to delete this item?
                 </div>
                 <div class="modal-footer">
-                    <a href="index.php"><button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button></a>
+                    <a href="profile.php"><button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button></a>
                     <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
                 </div>
             </div>
