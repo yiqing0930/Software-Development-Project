@@ -5,3 +5,9 @@
 **Application Access**
 
 2. Acess the SwapMe Application via the index.php page
+
+**Login Details**
+
+Valid Email: Yi3.Khoo@live.uwe.ac.uk
+
+Valid Password: Yiqing2002
